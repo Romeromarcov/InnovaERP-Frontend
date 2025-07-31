@@ -15,7 +15,7 @@ const SidebarMenu: React.FC = () => {
       </button>
       <nav>
         <ul>
-          <li><Link to="/">Dashboard</Link></li>
+          <li><Link to="/dashboard">Dashboard</Link></li>
           <li>
             <details>
               <summary>Empresas</summary>
@@ -45,6 +45,11 @@ const SidebarMenu: React.FC = () => {
               <summary>Finanzas</summary>
               <ul style={{ paddingLeft: 16 }}>
                 <li><Link to="/finanzas/monedas">Monedas</Link></li>
+                <li>
+                  <Link to={`/empresas/${localStorage.getItem('id_empresa') || ''}/tasas-cambio`}>
+                    Tasas de Cambio
+                  </Link>
+                </li>
               </ul>
             </details>
           </li>

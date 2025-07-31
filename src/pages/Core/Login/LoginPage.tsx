@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from '../../../components/LoginForm';
 import { Button } from '../../../components/Button';
 import { get } from '../../../services/api';
 import { loginAndFetchUser } from '../../../services/auth';
 
+
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [empresa, setEmpresa] = useState<string>('');
@@ -110,7 +113,7 @@ const LoginPage: React.FC = () => {
                     localStorage.setItem('sucursal', JSON.stringify(sucursalObj));
                   }
                 }
-                window.location.href = '/';
+                navigate('/dashboard');
               }}
               style={{ maxWidth: 350, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 }}
             >
