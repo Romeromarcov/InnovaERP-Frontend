@@ -17,7 +17,9 @@ export async function fetcher<T>(endpoint: string, options?: RequestInit): Promi
     ...(!isAuthEndpoint && token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options?.headers || {})
   };
-  const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+  const isAbsolute = endpoint.startsWith('http://') || endpoint.startsWith('https://');
+  const url = isAbsolute ? endpoint : `${API_URL}${endpoint}`;
+  const res = await fetch(url, { ...options, headers });
   if (!res.ok) {
     const errorText = await res.text();
     let errorObj;

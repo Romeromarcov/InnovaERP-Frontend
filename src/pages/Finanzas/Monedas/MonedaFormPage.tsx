@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { post } from '../../../services/api';
+import { post, get } from '../../../services/api';
+import { findSimilarMoneda } from '../../../utils/fuzzyDuplicate';
 import type { Moneda } from './MonedaListPage';
 import PageLayout from '../../../components/PageLayout';
 
@@ -21,6 +22,15 @@ const MonedaFormPage: React.FC = () => {
   const [moneda, setMoneda] = useState<Partial<Moneda>>(defaultMoneda);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const [monedasExistentes, setMonedasExistentes] = useState<Moneda[]>([]);
+
+  useEffect(() => {
+    get('/finanzas/monedas/?limit=1000').then((res) => {
+      if (Array.isArray(res)) setMonedasExistentes(res);
+      else if (res && Array.isArray((res as any).results)) setMonedasExistentes((res as any).results);
+      else setMonedasExistentes([]);
+    }).catch(() => setMonedasExistentes([]));
+  }, []);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -33,6 +43,13 @@ const MonedaFormPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    // Validación fuzzy de duplicados antes de enviar
+    const similar = findSimilarMoneda(moneda, monedasExistentes, 65);
+    if (similar) {
+      setError(`Ya existe una moneda similar: "${similar.nombre}" (${similar.codigo_iso})`);
+      return;
+    }
     setSaving(true);
     // Formatea la fecha correctamente
     const payload = {

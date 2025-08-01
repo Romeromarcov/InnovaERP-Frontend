@@ -50,6 +50,16 @@ const SidebarMenu: React.FC = () => {
                     Tasas de Cambio
                   </Link>
                 </li>
+                <li>
+                  <Link to={`/empresas/${localStorage.getItem('id_empresa') || ''}/metodos-pago`}>
+                    Métodos de Pago
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/finanzas/tipos-impuesto">
+                    Tipos de Impuesto
+                  </Link>
+                </li>
               </ul>
             </details>
           </li>

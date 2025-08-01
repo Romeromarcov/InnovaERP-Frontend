@@ -1,6 +1,12 @@
+import TipoImpuestoListPage from './pages/Finanzas/TipoImpuesto/TipoImpuestoList';
+import NuevoTipoImpuesto from './pages/Finanzas/TipoImpuesto/NuevoTipoImpuesto';
+import EditarTipoImpuesto from './pages/Finanzas/TipoImpuesto/EditarTipoImpuesto';
 import TasaCambioListPage from './pages/Finanzas/TasasCambio/TasaCambioListPage';
 import TasaCambioDetailPage from './pages/Finanzas/TasasCambio/TasaCambioDetailPage';
 import TasaCambioCreatePage from './pages/Finanzas/TasasCambio/TasaCambioCreatePage';
+import MetodoPagoListPage from './pages/Finanzas/MetodoPago/MetodoPagoListPage';
+import MetodoPagoDetailPage from './pages/Finanzas/MetodoPago/MetodoPagoDetailPage';
+import MetodoPagoCreatePage from './pages/Finanzas/MetodoPago/MetodoPagoCreatePage';
 import MonedaListPage from './pages/Finanzas/Monedas/MonedaListPage';
 import MonedaDetailPage from './pages/Finanzas/Monedas/MonedaDetailPage';
 import MonedaFormPage from './pages/Finanzas/Monedas/MonedaFormPage';
@@ -56,8 +62,16 @@ export default function AppRouter() {
         {/* Rutas protegidas solo si autenticado */}
         {isAuth && (
           <Route element={<ProtectedLayout />}>
+            {/* Tipos de Impuesto */}
+            <Route path="/finanzas/tipos-impuesto" element={<TipoImpuestoListPage />} />
+            <Route path="/finanzas/tipos-impuesto/nuevo" element={<NuevoTipoImpuesto />} />
+            <Route path="/finanzas/tipos-impuesto/:id/editar" element={<EditarTipoImpuesto />} />
             <Route path="/finanzas/monedas" element={<MonedaListPage />} />
             <Route path="/finanzas/monedas/new" element={<MonedaFormPage />} />
+            {/* Métodos de Pago */}
+            <Route path="/empresas/:id_empresa/metodos-pago" element={<MetodoPagoListPage />} />
+            <Route path="/empresas/:id_empresa/metodos-pago/new" element={<MetodoPagoCreatePage />} />
+            <Route path="/metodos-pago/:id_metodo_pago" element={<MetodoPagoDetailPage />} />
             <Route path="/finanzas/monedas/:id_moneda" element={<MonedaDetailPage />} />
             <Route path="/empresas/:id_empresa/usuarios" element={<UserListPage />} />
             <Route path="/empresas/:id_empresa/usuarios/new" element={<UserCreatePage />} />

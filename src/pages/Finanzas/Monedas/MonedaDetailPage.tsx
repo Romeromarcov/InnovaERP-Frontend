@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { get, put } from '../../../services/api';
+import { findSimilarMoneda } from '../../../utils/fuzzyDuplicate';
 import type { Moneda } from './MonedaListPage';
 import PageLayout from '../../../components/PageLayout';
 
@@ -10,6 +11,15 @@ const MonedaDetailPage: React.FC = () => {
   const [moneda, setMoneda] = useState<Moneda | null>(null);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const [monedasExistentes, setMonedasExistentes] = useState<Moneda[]>([]);
+  // Cargar todas las monedas para validación fuzzy (excepto la actual)
+  useEffect(() => {
+    get('/finanzas/monedas/?limit=1000').then((res) => {
+      if (Array.isArray(res)) setMonedasExistentes(res);
+      else if (res && Array.isArray((res as any).results)) setMonedasExistentes((res as any).results);
+      else setMonedasExistentes([]);
+    }).catch(() => setMonedasExistentes([]));
+  }, []);
 
   useEffect(() => {
     if (id_moneda) {
@@ -32,6 +42,14 @@ const MonedaDetailPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!moneda) return;
+    setError('');
+    // Validación fuzzy de duplicados antes de enviar (excluyendo la moneda actual)
+    const otras = monedasExistentes.filter(m => m.id_moneda !== moneda.id_moneda);
+    const similar = findSimilarMoneda(moneda, otras, 65);
+    if (similar) {
+      setError(`Ya existe una moneda similar: "${similar.nombre}" (${similar.codigo_iso})`);
+      return;
+    }
     setSaving(true);
     // Prepara el payload para cumplir con los tipos del modelo
     type MonedaPayload = Partial<Omit<Moneda, 'referencia_externa' | 'tipo_operacion' | 'fecha_cierre_estimada'> & {
