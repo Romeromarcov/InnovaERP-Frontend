@@ -56,8 +56,8 @@ const SidebarMenu: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/finanzas/tipos-impuesto">
-                    Tipos de Impuesto
+                  <Link to={`/empresas/${localStorage.getItem('id_empresa') || ''}/transacciones-financieras`}>
+                    Transacciones Financieras
                   </Link>
                 </li>
               </ul>

@@ -1,6 +1,4 @@
-import TipoImpuestoListPage from './pages/Finanzas/TipoImpuesto/TipoImpuestoList';
-import NuevoTipoImpuesto from './pages/Finanzas/TipoImpuesto/NuevoTipoImpuesto';
-import EditarTipoImpuesto from './pages/Finanzas/TipoImpuesto/EditarTipoImpuesto';
+
 import TasaCambioListPage from './pages/Finanzas/TasasCambio/TasaCambioListPage';
 import TasaCambioDetailPage from './pages/Finanzas/TasasCambio/TasaCambioDetailPage';
 import TasaCambioCreatePage from './pages/Finanzas/TasasCambio/TasaCambioCreatePage';
@@ -10,6 +8,12 @@ import MetodoPagoCreatePage from './pages/Finanzas/MetodoPago/MetodoPagoCreatePa
 import MonedaListPage from './pages/Finanzas/Monedas/MonedaListPage';
 import MonedaDetailPage from './pages/Finanzas/Monedas/MonedaDetailPage';
 import MonedaFormPage from './pages/Finanzas/Monedas/MonedaFormPage';
+import TransaccionFinancieraListPage from './pages/Finanzas/TransaccionFinanciera/TransaccionFinancieraListPage';
+import TransaccionFinancieraDetailPage from './pages/Finanzas/TransaccionFinanciera/TransaccionFinancieraDetailPage';
+import TransaccionFinancieraFormPage from './pages/Finanzas/TransaccionFinanciera/TransaccionFinancieraFormPage';
+// import RegistroIngresoPage from './pages/Finanzas/TransaccionFinanciera/RegistroIngresoPage';
+// import RegistroEgresoPage from './pages/Finanzas/TransaccionFinanciera/RegistroEgresoPage';
+import RegistroTransferenciaPage from './pages/Finanzas/TransaccionFinanciera/RegistroTransferenciaPage';
 // ...existing code...
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import DashboardUserPage from './pages/Core/Login/DashboardUserPage';
@@ -62,10 +66,7 @@ export default function AppRouter() {
         {/* Rutas protegidas solo si autenticado */}
         {isAuth && (
           <Route element={<ProtectedLayout />}>
-            {/* Tipos de Impuesto */}
-            <Route path="/finanzas/tipos-impuesto" element={<TipoImpuestoListPage />} />
-            <Route path="/finanzas/tipos-impuesto/nuevo" element={<NuevoTipoImpuesto />} />
-            <Route path="/finanzas/tipos-impuesto/:id/editar" element={<EditarTipoImpuesto />} />
+
             <Route path="/finanzas/monedas" element={<MonedaListPage />} />
             <Route path="/finanzas/monedas/new" element={<MonedaFormPage />} />
             {/* Métodos de Pago */}
@@ -100,7 +101,11 @@ export default function AppRouter() {
                 ? <Navigate to={`/empresas/${empresaId}/departamentos`} replace />
                 : <div style={{textAlign:'center',marginTop:64,fontSize:20}}>Seleccione una empresa para ver sus departamentos.</div>;
             })()} />
-            {/* Dashboard solo si autenticado */}
+            {/* Transacciones Financieras */}
+            <Route path="/empresas/:id_empresa/transacciones-financieras" element={<TransaccionFinancieraListPage />} />
+            <Route path="/empresas/:id_empresa/transacciones-financieras/new" element={<TransaccionFinancieraFormPage />} />
+            <Route path="/transacciones-financieras/:id_transaccion" element={<TransaccionFinancieraDetailPage />} />
+            <Route path="/empresas/:id_empresa/transacciones-financieras/transferencia/new" element={<RegistroTransferenciaPage />} />
             <Route path="/dashboard" element={(() => {
               const userStr = localStorage.getItem('usuario');
               let user = null;

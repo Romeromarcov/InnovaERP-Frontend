@@ -13,39 +13,22 @@ const LoginPage: React.FC = () => {
   const [empresa, setEmpresa] = useState<string>('');
   const [sucursal, setSucursal] = useState('');
   const [empresas, setEmpresas] = useState<Array<{ id_empresa: string; nombre_legal: string; nombre_comercial?: string }>>([]);
-  const [sucursales, setSucursales] = useState<Array<{ id_sucursal: string; nombre: string; id_empresa: string }>>([]);
+  const [sucursales] = useState<Array<{ id_sucursal: string; nombre: string; id_empresa: string }>>([]);
   const [step, setStep] = useState<'login' | 'select'>('login');
+
+  // Solicita la cookie CSRF al cargar la página de login
+  useEffect(() => {
+    // Solicita la cookie CSRF al cargar la página de login
+    fetch('/api/', { credentials: 'include' }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (step === 'select') {
+      // Carga las empresas disponibles para el usuario
       get('/core/empresas/')
         .then(res => {
           if (Array.isArray(res)) setEmpresas(res);
-          else if (
-            res &&
-            typeof res === 'object' &&
-            res !== null &&
-            'results' in res &&
-            Array.isArray((res as { results?: unknown }).results)
-          ) {
-            setEmpresas((res as { results: typeof empresas }).results);
-          } else setEmpresas([]);
-        })
-        .catch(() => setEmpresas([]));
-      get('/core/sucursales/')
-        .then(res => {
-          if (Array.isArray(res)) setSucursales(res);
-          else if (
-            res &&
-            typeof res === 'object' &&
-            res !== null &&
-            'results' in res &&
-            Array.isArray((res as { results?: unknown }).results)
-          ) {
-            setSucursales((res as { results: typeof sucursales }).results);
-          } else setSucursales([]);
-        })
-        .catch(() => setSucursales([]));
+        });
     }
   }, [step]);
 
@@ -54,6 +37,7 @@ const LoginPage: React.FC = () => {
     setError('');
     try {
       await loginAndFetchUser(username, password);
+      // Aquí podrías cargar roles, permisos, empresas, sucursales, etc. si lo necesitas
       setStep('select');
     } catch (err: unknown) {
       console.error('Login error:', err);

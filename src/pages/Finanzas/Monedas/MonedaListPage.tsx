@@ -79,18 +79,24 @@ const MonedaListPage: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  // Definir el tipo global para id_empresa
+  interface WindowWithEmpresa extends Window {
+    id_empresa?: string;
+  }
+  const id_empresa = (window as WindowWithEmpresa).id_empresa || '';
+
   const handleToggle = async (moneda: Moneda) => {
     const actual = activas[moneda.id_moneda];
     const nuevaActivo = !(actual?.activa ?? true);
     setActivas(prev => ({
       ...prev,
-      [moneda.id_moneda]: { ...actual, moneda: moneda.id_moneda, activa: nuevaActivo }
+      [moneda.id_moneda]: { ...actual, moneda: moneda.id_moneda, empresa: id_empresa, activa: nuevaActivo }
     }));
     try {
       if (actual && actual.id) {
         await patch(`/finanzas/monedas-empresa-activas/${actual.id}/`, { activa: nuevaActivo });
       } else {
-        await post('/finanzas/monedas-empresa-activas/', { moneda: moneda.id_moneda, activa: nuevaActivo });
+        await post('/finanzas/monedas-empresa-activas/', { moneda: moneda.id_moneda, empresa: id_empresa, activa: nuevaActivo });
       }
     } catch {
       setError('No se pudo actualizar el estado de la moneda');
