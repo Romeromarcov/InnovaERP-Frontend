@@ -13,7 +13,7 @@ import TransaccionFinancieraDetailPage from './pages/Finanzas/TransaccionFinanci
 import TransaccionFinancieraFormPage from './pages/Finanzas/TransaccionFinanciera/TransaccionFinancieraFormPage';
 // import RegistroIngresoPage from './pages/Finanzas/TransaccionFinanciera/RegistroIngresoPage';
 // import RegistroEgresoPage from './pages/Finanzas/TransaccionFinanciera/RegistroEgresoPage';
-import RegistroTransferenciaPage from './pages/Finanzas/TransaccionFinanciera/RegistroTransferenciaPage';
+// import RegistroTransferenciaPage from './pages/Finanzas/TransaccionFinanciera/RegistroTransferenciaPage';
 // ...existing code...
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import DashboardUserPage from './pages/Core/Login/DashboardUserPage';
@@ -105,7 +105,7 @@ export default function AppRouter() {
             <Route path="/empresas/:id_empresa/transacciones-financieras" element={<TransaccionFinancieraListPage />} />
             <Route path="/empresas/:id_empresa/transacciones-financieras/new" element={<TransaccionFinancieraFormPage />} />
             <Route path="/transacciones-financieras/:id_transaccion" element={<TransaccionFinancieraDetailPage />} />
-            <Route path="/empresas/:id_empresa/transacciones-financieras/transferencia/new" element={<RegistroTransferenciaPage />} />
+            {/* <Route path="/empresas/:id_empresa/transacciones-financieras/transferencia/new" element={<RegistroTransferenciaPage />} /> */}
             <Route path="/dashboard" element={(() => {
               const userStr = localStorage.getItem('usuario');
               let user = null;

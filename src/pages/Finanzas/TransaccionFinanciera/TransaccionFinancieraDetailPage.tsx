@@ -20,6 +20,12 @@ type TransaccionFinancieraDetail = {
   id_empresa?: string;
   id_empresa_nombre?: string;
   id_usuario_registro?: string;
+  id_caja?: string;
+  id_caja_nombre?: string;
+  id_cuenta_bancaria?: string;
+  id_cuenta_bancaria_nombre?: string;
+  tipo_documento?: string;
+  nro_documento?: string;
   [key: string]: string | number | boolean | undefined;
 };
 
@@ -112,9 +118,25 @@ const TransaccionFinancieraDetailPage: React.FC = () => {
               <td style={{ fontWeight: 'bold', padding: '4px 8px', background: '#f6fafd' }}>Descripción</td>
               <td style={{ padding: '4px 8px' }}>{data.descripcion}</td>
             </tr>
+            {/* Caja asociada */}
             <tr>
-              <td style={{ fontWeight: 'bold', padding: '4px 8px', background: '#f6fafd' }}>Usuario Registro</td>
-              <td style={{ padding: '4px 8px' }}>{data.id_usuario_registro__username}</td>
+              <td style={{ fontWeight: 'bold', padding: '4px 8px', background: '#f6fafd' }}>Caja</td>
+              <td style={{ padding: '4px 8px' }}>{data.id_caja_nombre || data.id_caja || '-'}</td>
+            </tr>
+            {/* Cuenta bancaria asociada */}
+            <tr>
+              <td style={{ fontWeight: 'bold', padding: '4px 8px', background: '#f6fafd' }}>Cuenta Bancaria</td>
+              <td style={{ padding: '4px 8px' }}>{data.id_cuenta_bancaria_nombre || data.id_cuenta_bancaria || '-'}</td>
+            </tr>
+            {/* Tipo de documento asociado */}
+            <tr>
+              <td style={{ fontWeight: 'bold', padding: '4px 8px', background: '#f6fafd' }}>Tipo de Documento</td>
+              <td style={{ padding: '4px 8px' }}>{data.tipo_documento || '-'}</td>
+            </tr>
+            {/* Número de documento asociado */}
+            <tr>
+              <td style={{ fontWeight: 'bold', padding: '4px 8px', background: '#f6fafd' }}>Nro. Documento</td>
+              <td style={{ padding: '4px 8px' }}>{data.nro_documento || '-'}</td>
             </tr>
             <tr>
               <td style={{ fontWeight: 'bold', padding: '4px 8px', background: '#f6fafd' }}>Conciliada</td>

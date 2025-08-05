@@ -54,6 +54,10 @@ const TransaccionFinancieraFormPage: React.FC = () => {
     id_metodo_pago: '',
     referencia_pago: '',
     descripcion: '',
+    id_caja: '',
+    id_cuenta_bancaria: '',
+    tipo_documento_asociado: '',
+    nro_documento_asociado: '',
   });
 
   useEffect(() => {
@@ -250,19 +254,23 @@ const TransaccionFinancieraFormPage: React.FC = () => {
       // Construir el payload para la API con los nombres y valores correctos
       const payload = {
         fecha_hora_transaccion: form.fecha_hora_transaccion,
-        tipo_transaccion: (form.tipo_transaccion || '').toUpperCase(), // 'INGRESO', 'EGRESO', 'TRANSFERENCIA'
+        tipo_transaccion: (form.tipo_transaccion || '').toUpperCase(),
         monto_transaccion: form.monto_transaccion,
         id_moneda_transaccion: form.id_moneda_transaccion,
         id_metodo_pago: form.id_metodo_pago,
         referencia_pago: form.referencia_pago,
         descripcion: form.descripcion,
         tasa_cambio: tasaCambio,
-        monto_base_empresa: montoBase, // nombre correcto para el backend
-        id_empresa: idEmpresa, // nombre correcto para el backend
-        id_usuario_registro: usuarioId, // ahora incluido desde localStorage
+        monto_base_empresa: montoBase,
+        id_empresa: idEmpresa,
+        id_usuario_registro: usuarioId,
         id_moneda_base: idMonedaBase,
         id_moneda_pais_empresa: idMonedaPaisEmpresa,
         monto_moneda_pais: montoMonedaPais,
+        id_caja: form.id_caja,
+        id_cuenta_bancaria: form.id_cuenta_bancaria,
+        tipo_documento_asociado: form.tipo_documento_asociado,
+        nro_documento_asociado: form.nro_documento_asociado,
       };
       const res = await fetch('/api/finanzas/transacciones-financieras/', {
         method: 'POST',
@@ -341,6 +349,18 @@ const TransaccionFinancieraFormPage: React.FC = () => {
 
         <Input label="Referencia" name="referencia_pago" value={form.referencia_pago} onChange={handleChange} />
         <Input label="Descripción" name="descripcion" value={form.descripcion} onChange={handleChange} />
+        <Input label="Caja" name="id_caja" value={form.id_caja} onChange={handleChange} required />
+        <Input label="Cuenta Bancaria" name="id_cuenta_bancaria" value={form.id_cuenta_bancaria} onChange={handleChange} />
+        <label style={{ display: 'block', marginBottom: 4 }}>Tipo de Documento Asociado</label>
+        <select name="tipo_documento_asociado" value={form.tipo_documento_asociado} onChange={handleChange} required style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', width: '100%', marginBottom: 16 }}>
+          <option value="">Seleccione tipo de documento</option>
+          <option value="COMPRA">Compra</option>
+          <option value="VENTA">Venta</option>
+          <option value="GASTO">Gasto</option>
+          <option value="NOMINA">Nómina</option>
+          <option value="AJUSTE">Ajuste</option>
+        </select>
+        <Input label="Nro. Documento Asociado" name="nro_documento_asociado" value={form.nro_documento_asociado} onChange={handleChange} />
         <Button type="submit" disabled={loading}>
           {loading ? 'Registrando...' : 'Registrar transacción'}
         </Button>

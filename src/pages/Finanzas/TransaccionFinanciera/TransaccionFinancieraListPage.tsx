@@ -9,7 +9,6 @@ const tipoTransaccionOptions = [
   { value: '', label: 'Todos' },
   { value: 'ingreso', label: 'Ingreso' },
   { value: 'egreso', label: 'Egreso' },
-  { value: 'transferencia', label: 'Transferencia' },
 ];
 
 type TransaccionFinanciera = {
@@ -84,7 +83,6 @@ const TransaccionFinancieraListPage: React.FC = () => {
         <Input type="date" label="Desde" value={filters.fecha_inicio} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilters(f => ({ ...f, fecha_inicio: e.target.value }))} />
         <Input type="date" label="Hasta" value={filters.fecha_fin} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilters(f => ({ ...f, fecha_fin: e.target.value }))} />
         <Button variant="primary" onClick={() => navigate(`/empresas/${id_empresa}/transacciones-financieras/new`)}>Nueva Transacción</Button>
-        <Button variant="secondary" onClick={() => navigate(`/empresas/${id_empresa}/transacciones-financieras/transferencia/new`)}>Nueva Transferencia</Button>
         <Button variant="outline" onClick={() => exportTransaccionesFinancieras(id_empresa, filters)}>Exportar</Button>
       </div>
       <div style={{ overflowX: 'auto' }}>

@@ -54,6 +54,3 @@ export async function createEgreso(id_empresa: string | undefined, data: Record<
 }
 
 
-export async function createTransferencia(id_empresa: string | undefined, data: Record<string, unknown>) {
-  return post(`/finanzas/transacciones-financieras/transferencia/?id_empresa=${id_empresa}`, data);
-}
